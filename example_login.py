@@ -4,6 +4,8 @@ from bottle import route, response, request, redirect, debug, run
 
 import saml
 
+import os
+
 # saml.py using the logging module, and a logger called 'saml'
 # use DEBUG for verbose output
 import logging
@@ -67,4 +69,4 @@ def sso():
 
 
 debug(True)
-run(reloader=True, host='127.0.0.1', port='8888')
+run(reloader=True, host=os.getenv('SAML_HOST', '127.0.0.1'), port=os.getenv('SAML_PORT', '8888'))
