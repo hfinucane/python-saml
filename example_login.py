@@ -22,15 +22,15 @@ logger.setLevel(logging.DEBUG)
 
 ## Service Provider metadata
 # entityID registered with the IdP
-saml.SP['entityID'] = 'https://sp.test.org/shibboleth-sp'
+saml.SP['entityID'] = os.getenv('SAML_ENTITY_ID', 'https://sp.test.org/shibboleth-sp')
 # Assertion Consumer Server URL
-saml.SP['ACS'] = 'https://sp.test.org/SSO'
+saml.SP['ACS'] = os.getenv('SAML_CONSUMER_SERVER', 'https://sp.test.org/SSO')
 
 # Identity Provider metadata
 saml.IdP['entityID'] = 'https://idp.test.org/idp/shibboleth'
 saml.IdP['SingleSignOnService'] = 'https://idp.test.org/idp/profile/SAML2/Redirect/SSO'
 # the X509 certificate must in PEM form, including BEGIN and END lines
-with open('idp.pem') as pem:
+with open(os.getenv('SAML_IDP_PATH','idp.pem')) as pem:
     saml.IdP['X509'] = pem.read()
 
 
@@ -41,7 +41,7 @@ with open('idp.pem') as pem:
 # after authentication.
 @route('/login')
 def login():
-    final_destination = 'http://sp.test.org/some/path'
+    final_destination = os.getenv('SAML_DESTINATION', 'http://sp.test.org/some/path')
     redirect(saml.request(relay_state=final_destination))
 
 
