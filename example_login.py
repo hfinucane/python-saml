@@ -61,12 +61,8 @@ def sso():
     # and empty dict.
         
     final_destination = request.forms.get('RelayState')
-    print attrs
+    return attrs
     # continue
-    
-
-
-
 
 debug(True)
 run(reloader=True, host=os.getenv('SAML_HOST', '127.0.0.1'), port=os.getenv('SAML_PORT', '8888'))
